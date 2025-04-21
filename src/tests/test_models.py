@@ -2,7 +2,8 @@ import uuid
 
 import pytest
 
-from users_core.models import Password, PasswordHasher, User
+from users_core.hashers import password_hasher
+from users_core.models import Password, User
 from users_core.validators import (
     EmailInvalidStruct,
     PasswordInvalidLength,
@@ -20,8 +21,8 @@ def test_valid_user():
 
 
 def test_valid_password():
-    password = Password(user_id=uuid.uuid4(), value="Pass@12345")
-    assert password.value.startswith(PasswordHasher().prefix)
+    password = Password(user_id=uuid.uuid4(), raw="Pass@12345")
+    assert password.hash.startswith(password_hasher.prefix)
 
 
 @pytest.mark.parametrize(
@@ -51,4 +52,4 @@ def test_invalid_user(username, email, exc):
 )
 def test_invalid_password(value, exc):
     with pytest.raises(exc):
-        _ = Password(user_id=uuid.uuid4(), value=value)
+        _ = Password(user_id=uuid.uuid4(), raw=value)
