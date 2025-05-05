@@ -39,6 +39,11 @@ def test_invalid_user(username, email, exc):
     with pytest.raises(exc):
         _ = User(username=username, email=email)
 
+    user = User(username="username", email="user@host")
+    with pytest.raises(exc):
+        user.username = username
+        user.email = email
+
 
 @pytest.mark.parametrize(
     argnames=("value", "exc"),

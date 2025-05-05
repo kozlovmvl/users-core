@@ -34,7 +34,7 @@ class User(BaseModel):
     username: Username
     email: Email
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, validate_assignment=True)
 
 
 class Password(BaseModel):
